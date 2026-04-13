@@ -1,0 +1,66 @@
+// Подключаемые плагины
+plugins {
+    // Плагин для Java
+    id 'java'
+    // Плагин для Allure отчетов (нужен для генерации отчетов о тестировании)
+    id 'io.qameta.allure' version '2.11.2'
+}
+
+// Группа проекта (обычно используется для настройки публикации артефактов)
+group = 'tests'
+// Версия проекта
+version = '1.0-SNAPSHOT'
+
+// Репозитории для загрузки зависимостей
+repositories {
+    mavenCentral()
+}
+
+// Зависимости проекта
+dependencies {
+    // REST Assured - основная библиотека для HTTP тестирования
+    testImplementation 'io.rest-assured:rest-assured:5.5.0'
+    // Валидация JSON схем (для проверки структуры ответа)
+    implementation 'io.rest-assured:json-schema-validator:5.4.0'
+    // Jackson - библиотека для сериализации/десериализации JSON
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.1'
+    // Поддержка Java Time API в Jackson (для работы с датами)
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.1'
+    // JUnit 5 - фреймворк для написания и запуска тестов
+    implementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    // Allure RestAssured integration
+    testImplementation 'io.qameta.allure:allure-rest-assured:2.24.0'
+    // AssertJ for soft assertions
+    testImplementation 'org.assertj:assertj-core:3.26.3'
+    // Hamcrest - библиотека для assertions (проверок)
+    implementation 'org.hamcrest:hamcrest:2.2'
+    // SLF4J Simple - простой логгер для вывода логов
+    implementation 'org.slf4j:slf4j-simple:2.0.12'
+
+    // Зависимость, нужная только для запуска тестов (не в runtime)
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// Настройка выполнения тестов
+test {
+    // Используем JUnit Platform (JUnit 5)
+    useJUnitPlatform()
+    // Настройка вывода информации о тестах в консоль
+    testLogging {
+        events "passed", "skipped", "failed"  // Показывать только эти события
+        showStandardStreams = false            // Не показывать стандартные потоки вывода
+    }
+}
+
+/**
+ * Кастомная задача для запуска тестов с красивым сообщением
+ * При запуске './gradlew runTests' сначала выполняются тесты, затем выводится сообщение
+ */
+tasks.register('runTests') {
+    // Задача runTests зависит от стандартной задачи test
+    dependsOn 'test'
+    // Блок кода, который выполняется после завершения тестов
+    doLast {
+        println "\n✅ Tests completed! To generate Allure report run: ./gradlew allureServe"
+    }
+}
