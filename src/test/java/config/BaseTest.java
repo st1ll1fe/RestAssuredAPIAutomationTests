@@ -1,26 +1,43 @@
 package config;
 
-import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
+import models.Pet;
+import models.User;
 
-/**
- * Базовый класс, задающий базовый URI и общую спецификацию запросов.
- * Делает её доступной через protected поле `spec`.
- */
 public class BaseTest {
-
-    /** Базовый URL Petstore (можно переопределить переменной окружения BASE_URL). */
     protected static final String BASE_URL = System.getenv().getOrDefault("BASE_URL", "https://petstore.swagger.io/v2");
+    protected static final RequestSpecification SPEC = new RequestSpecBuilder()
+            .setBaseUri(BASE_URL)
+            .setContentType("application/json")
+            .setAccept("application/json")
+            .build();
 
-    /** Общий RequestSpecification, используемый во всех запросах. */
-    protected static final RequestSpecification SPEC;
+    protected String generateId() {
+        return String.valueOf(System.currentTimeMillis());
+    }
 
-    static {
-        RestAssured.baseURI = BASE_URL;
-        SPEC = new RequestSpecBuilder()
-                .setContentType("application/json")
-                .setAccept("application/json")
-                .build();
+    protected String generateUsername() {
+        return "user_" + generateId();
+    }
+
+    protected String generatePetName() {
+        return "Pet_" + generateId();
+    }
+
+    protected Pet createPet(Long id, String name, String status) {
+        Pet pet = new Pet();
+        pet.setId(id);
+        pet.setName(name);
+        pet.setStatus(status);
+        return pet;
+    }
+
+    protected User createUser(String username, String email, String password) {
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
+        return user;
     }
 }

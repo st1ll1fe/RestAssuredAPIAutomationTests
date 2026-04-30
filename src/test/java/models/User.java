@@ -2,62 +2,16 @@ package models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * DTO (Data Transfer Object) для пользователя из Petstore API
- * Используется для сериализации/десериализации JSON при работе с User API
- */
 public class User {
+    @JsonProperty("id") private Long id;
+    @JsonProperty("username") private String username;
+    @JsonProperty("firstName") private String firstName;
+    @JsonProperty("lastName") private String lastName;
+    @JsonProperty("email") private String email;
+    @JsonProperty("password") private String password;
+    @JsonProperty("phone") private String phone;
+    @JsonProperty("userStatus") private Integer userStatus;
 
-    // Уникальный идентификатор пользователя
-    @JsonProperty("id")
-    private Long id;
-
-    // Уникальное имя пользователя (логин)
-    @JsonProperty("username")
-    private String username;
-
-    // Имя пользователя
-    @JsonProperty("firstName")
-    private String firstName;
-
-    // Фамилия пользователя
-    @JsonProperty("lastName")
-    private String lastName;
-
-    // Email пользователя
-    @JsonProperty("email")
-    private String email;
-
-    // Пароль пользователя
-    @JsonProperty("password")
-    private String password;
-
-    // Телефон пользователя
-    @JsonProperty("phone")
-    private String phone;
-
-    // Статус пользователя (0 - активен, и т.д.)
-    @JsonProperty("userStatus")
-    private Integer userStatus;
-
-    // Конструктор по умолчанию (нужен для Jackson)
-    public User() {}
-
-    // Конструктор с ID, username и email
-    public User(Long id, String username, String email) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-    }
-
-    // Конструктр с username, email и password
-    public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
-
-    // Геттеры и сеттеры
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
